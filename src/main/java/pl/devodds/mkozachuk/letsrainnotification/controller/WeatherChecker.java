@@ -8,6 +8,7 @@ import net.aksingh.owmjapis.model.HourlyWeatherForecast;
 import net.aksingh.owmjapis.model.param.WeatherData;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import pl.devodds.mkozachuk.letsrainnotification.model.Weather;
 
@@ -20,7 +21,9 @@ import java.util.*;
 @Slf4j
 @Controller
 public class WeatherChecker {
-    private OWM owm = new OWM(System.getProperty("weatherapi"));
+    @Value("${app.weatherapi}")
+    private String apikey = "51853e7a61d644992bb0b3223a0d0313";
+    private OWM owm = new OWM(apikey);
 
     public CurrentWeather getCurrentWeatherData(int cityId) {
         owm.setUnit(OWM.Unit.METRIC);
