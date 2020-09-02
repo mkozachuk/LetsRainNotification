@@ -22,47 +22,43 @@ import java.util.*;
 public class WeatherChecker {
     private OWM owm = new OWM(System.getProperty("weatherapi"));
 
-    public JSONObject getCurrentWeatherData(int cityId) {
+    public CurrentWeather getCurrentWeatherData(int cityId) {
         owm.setUnit(OWM.Unit.METRIC);
-        JSONObject allCurrentlyWeatherData;
         try {
-            allCurrentlyWeatherData = new JSONObject(owm.currentWeatherByCityId(cityId));
+            return owm.currentWeatherByCityId(cityId);
         } catch (APIException e) {
             log.error("Wheather API Exception : {}", e.getInfo());
             e.printStackTrace();
-            allCurrentlyWeatherData = new JSONObject();
+            return new CurrentWeather();
         }
-        return allCurrentlyWeatherData;
     }
 
-    public JSONObject getHourlyWeatherData(int cityId) {
+    public HourlyWeatherForecast getHourlyWeatherData(int cityId) {
         owm.setUnit(OWM.Unit.METRIC);
-        JSONObject allHourlyWeatherData;
         try {
-            allHourlyWeatherData = new JSONObject(owm.hourlyWeatherForecastByCityId(cityId));
+            return owm.hourlyWeatherForecastByCityId(cityId);
         } catch (APIException e) {
             log.error("Wheather API Exception : {}", e.getInfo());
             e.printStackTrace();
-            allHourlyWeatherData = new JSONObject();
+            return new HourlyWeatherForecast();
         }
-        return allHourlyWeatherData;
     }
 
     public Weather currentWeatherMaker(CurrentWeather currentWeatherData) {
         Weather weather = new Weather();
 
-        if(currentWeatherData.hasMainData()) {
+        if (currentWeatherData.hasMainData()) {
             weather.setCurrentTemp(currentWeatherData.getMainData().getTemp());
             weather.setHumidity(currentWeatherData.getMainData().getHumidity().intValue());
             weather.setPressure(currentWeatherData.getMainData().getPressure().intValue());
-        }else {
+        } else {
             log.error("NPE There is no MainData");
         }
-        if(currentWeatherData.hasWeatherList()) {
+        if (currentWeatherData.hasWeatherList()) {
             weather.setIconLink(currentWeatherData.getWeatherList().get(0).getIconLink());
             weather.setConditionId(currentWeatherData.getWeatherList().get(0).getConditionId());
             weather.setDescription(currentWeatherData.getWeatherList().get(0).getDescription());
-        }else {
+        } else {
             log.error("NPE There is no WeatherList");
         }
         weather.setCloudPercent(currentWeatherData.getCloudData().getCloud().intValue());
@@ -75,18 +71,18 @@ public class WeatherChecker {
         for (int i = 0; i < dates.size(); i++) {
             Weather weather = new Weather();
             weather.setDate(dates.get(i).getDateTime());
-            if(dates.get(i).hasMainData()) {
-            weather.setCurrentTemp(dates.get(i).getMainData().getTemp());
-            weather.setHumidity(dates.get(i).getMainData().getHumidity().intValue());
-            weather.setPressure(dates.get(i).getMainData().getPressure().intValue());
-            }else {
+            if (dates.get(i).hasMainData()) {
+                weather.setCurrentTemp(dates.get(i).getMainData().getTemp());
+                weather.setHumidity(dates.get(i).getMainData().getHumidity().intValue());
+                weather.setPressure(dates.get(i).getMainData().getPressure().intValue());
+            } else {
                 log.error("NPE There is no MainData");
             }
-            if(dates.get(i).hasWeatherList()) {
-            weather.setIconLink(dates.get(i).getWeatherList().get(0).getIconLink());
-            weather.setConditionId(dates.get(i).getWeatherList().get(0).getConditionId());
-            weather.setDescription(dates.get(i).getWeatherList().get(0).getDescription());
-            }else {
+            if (dates.get(i).hasWeatherList()) {
+                weather.setIconLink(dates.get(i).getWeatherList().get(0).getIconLink());
+                weather.setConditionId(dates.get(i).getWeatherList().get(0).getConditionId());
+                weather.setDescription(dates.get(i).getWeatherList().get(0).getDescription());
+            } else {
                 log.error("NPE There is no WeatherList");
             }
             weather.setCloudPercent(dates.get(i).getCloudData().getCloud().intValue());
@@ -107,17 +103,17 @@ public class WeatherChecker {
         int forecastDay;
 
         List<Weather> todayHourly = new ArrayList<>();
-        for(Weather hourly : hourlyWeather){
+        for (Weather hourly : hourlyWeather) {
             forecastDate = hourly.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             forecastDay = forecastDate.getDayOfMonth();
-            if(forecastDay == today){
+            if (forecastDay == today) {
                 todayHourly.add(hourly);
             }
         }
         System.out.println(todayHourly);
 
-        for(Weather todayWeather : todayHourly){
-            if(todayWeather.getDescription().contains("rain")){
+        for (Weather todayWeather : todayHourly) {
+            if (todayWeather.getDescription().contains("rain")) {
                 rainy = true;
             }
         }

@@ -2,10 +2,7 @@ package pl.devodds.mkozachuk.letsrainnotification.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
@@ -22,5 +19,8 @@ public class Place {
 
     private double lon;    //21.01178
     private double lat;    //52.229771
+
+    @ManyToOne
+    private User user;
 
 }
