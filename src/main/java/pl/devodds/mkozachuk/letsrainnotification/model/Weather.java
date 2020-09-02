@@ -2,8 +2,10 @@ package pl.devodds.mkozachuk.letsrainnotification.model;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
-public class CurrentWeather {
+public class Weather {
     private int humidity;
     private double currentTemp;
     private int pressure;
@@ -11,4 +13,5 @@ public class CurrentWeather {
     private int conditionId;
     private String description;
     private int cloudPercent;
+    private Date date;
 }
