@@ -3,6 +3,7 @@ package pl.devodds.mkozachuk.letsrainnotification.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.util.Date;
 
 @Data

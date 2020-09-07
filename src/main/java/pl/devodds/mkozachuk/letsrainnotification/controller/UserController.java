@@ -1,5 +1,6 @@
 package pl.devodds.mkozachuk.letsrainnotification.controller;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import pl.devodds.mkozachuk.letsrainnotification.model.User;
 import pl.devodds.mkozachuk.letsrainnotification.repository.UserRepository;
@@ -67,6 +68,15 @@ public class UserController {
         cal.set(Calendar.MILLISECOND, 0);
         Date thirtyDaysAgo = cal.getTime();
         return userRepository.getUsersBySigndateAfter(thirtyDaysAgo);
+    }
+
+    public List<User> getAllForNotification(){
+        return userRepository.findAllByNotificationtimeIsNotNullOrderByNotificationtime();
+    }
+
+    @Bean
+    public int usersForNotification(){
+        return getAllForNotification().size();
     }
 
 }

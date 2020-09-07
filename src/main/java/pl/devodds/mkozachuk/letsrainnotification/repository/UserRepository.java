@@ -13,4 +13,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
     List<User> getAllByStatusIsNotLike(User.UserStatus status);
     User findUserByChatId(Long chatId);
     User findUserByUsername(String username);
+    List<User> findAllByNotificationtimeIsNotNullOrderByNotificationtime();
 }

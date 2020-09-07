@@ -6,14 +6,10 @@ import net.aksingh.owmjapis.core.*;
 import net.aksingh.owmjapis.model.CurrentWeather;
 import net.aksingh.owmjapis.model.HourlyWeatherForecast;
 import net.aksingh.owmjapis.model.param.WeatherData;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import pl.devodds.mkozachuk.letsrainnotification.model.Weather;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -25,10 +21,10 @@ public class WeatherChecker {
     private String apikey = "51853e7a61d644992bb0b3223a0d0313";
     private OWM owm = new OWM(apikey);
 
-    public CurrentWeather getCurrentWeatherData(int cityId) {
+    public CurrentWeather getCurrentWeatherData(double lat, double lon) {
         owm.setUnit(OWM.Unit.METRIC);
         try {
-            return owm.currentWeatherByCityId(cityId);
+            return owm.currentWeatherByCoords(lat, lon);
         } catch (APIException e) {
             log.error("Wheather API Exception : {}", e.getInfo());
             e.printStackTrace();
@@ -36,10 +32,10 @@ public class WeatherChecker {
         }
     }
 
-    public HourlyWeatherForecast getHourlyWeatherData(int cityId) {
+    public HourlyWeatherForecast getHourlyWeatherData(double lat, double lon) {
         owm.setUnit(OWM.Unit.METRIC);
         try {
-            return owm.hourlyWeatherForecastByCityId(cityId);
+            return owm.hourlyWeatherForecastByCoords(lat, lon);
         } catch (APIException e) {
             log.error("Wheather API Exception : {}", e.getInfo());
             e.printStackTrace();
@@ -124,5 +120,7 @@ public class WeatherChecker {
         return rainy;
     }
 
-
+    public OWM getOwm() {
+        return owm;
+    }
 }
