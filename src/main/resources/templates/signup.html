@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sing up</title>
+</head>
+<body>
+<form method="POST" th:object="${newUser}" th:action="@{/notifications/signup}">
+    <div>
+        <label th:text="Username"></label>
+            <input type="text" th:field="*{username}" >
+        <label th:text="Email"></label>
+            <input type="email" th:field="*{email}" >
+        <label th:text="NotificationTime"></label>
+            <input type="text" th:field="*{notificationStringTime}" >
+    </div>
+    <button id="submit" type="submit" name="submit" style="margin: auto;display: table;">
+        Go next
+    </button>
+</form>
+</body>
+</html>

@@ -23,4 +23,7 @@ public class Place {
     @ManyToOne
     private User user;
 
+    @Transient
+    private String email;
+
 }

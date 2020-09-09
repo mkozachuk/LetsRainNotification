@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New Place</title>
+</head>
+<body>
+
+<form method="POST" th:object="${newPlace}" th:action="@{/notifications/newplace}">
+    <div>
+        <label th:text="email"></label>
+        <input type="email" th:field="*{email}" >
+        <label th:text="Latitude"></label>
+        <input type="text" th:field="*{lat}" >
+        <label th:text="Longitude"></label>
+        <input type="text" th:field="*{lon}" >
+    </div>
+    <button id="submit" type="submit" name="submit" style="margin: auto;display: table;">
+        Go next
+    </button>
+</form>
+</body>
+</html>

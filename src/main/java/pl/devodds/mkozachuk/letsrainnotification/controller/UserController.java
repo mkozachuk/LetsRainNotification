@@ -1,8 +1,11 @@
 package pl.devodds.mkozachuk.letsrainnotification.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import pl.devodds.mkozachuk.letsrainnotification.model.User;
+import pl.devodds.mkozachuk.letsrainnotification.notification.NotificationExecutor;
 import pl.devodds.mkozachuk.letsrainnotification.repository.UserRepository;
 
 import java.util.Calendar;
@@ -10,15 +13,22 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
+@Slf4j
 public class UserController {
     private UserRepository userRepository;
-
-    public UserController(UserRepository userRepository) {
+    private NotificationExecutor notificationExecutor;
+    public UserController(UserRepository userRepository, @Lazy NotificationExecutor notificationExecutor) {
         this.userRepository = userRepository;
+        this.notificationExecutor = notificationExecutor;
     }
 
     public void save(User user) {
         userRepository.save(user);
+        log.info("Data in DB has been change: {}", user);
+        notificationExecutor.shutdownScheduler();
+        log.info("NotificationExecutor has been shutdown");
+        notificationExecutor.scheduleNotification();
+        log.info("New Notification Scheduler is UP");
     }
 
     public boolean isExistInDb(Long chatID) {
@@ -74,9 +84,8 @@ public class UserController {
         return userRepository.findAllByNotificationtimeIsNotNullOrderByNotificationtime();
     }
 
-    @Bean
-    public int usersForNotification(){
-        return getAllForNotification().size();
+    public User findByEmail(String email){
+        return userRepository.findByEmail(email);
     }
 
 }

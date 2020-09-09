@@ -25,6 +25,9 @@ public class User {
     private String language;
     private long chatId;
 
+    @Transient
+    private String notificationStringTime;
+
     public enum UserStatus{
         NEW, LETSRAIN, PREMIUM
     }
