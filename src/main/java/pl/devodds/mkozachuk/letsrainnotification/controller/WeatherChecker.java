@@ -95,20 +95,8 @@ public class WeatherChecker {
     public boolean isItRainyToday(List<Weather> hourlyWeather) {
 
         boolean rainy = false;
-        Date currentDate = new Date();
-        LocalDate localDate = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        int today = localDate.getDayOfMonth();
-        LocalDate forecastDate;
-        int forecastDay;
 
-        List<Weather> todayHourly = new ArrayList<>();
-        for (Weather hourly : hourlyWeather) {
-            forecastDate = hourly.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            forecastDay = forecastDate.getDayOfMonth();
-            if (forecastDay == today) {
-                todayHourly.add(hourly);
-            }
-        }
+        List<Weather> todayHourly = todayHourlyForecast(hourlyWeather);
         System.out.println(todayHourly);
 
         for (Weather todayWeather : todayHourly) {
@@ -118,6 +106,23 @@ public class WeatherChecker {
         }
 
         return rainy;
+    }
+
+    public List<Weather> todayHourlyForecast(List<Weather> hourlyWeather){
+        List<Weather> todayHourly = new ArrayList<>();
+        Date currentDate = new Date();
+        LocalDate localDate = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int today = localDate.getDayOfMonth();
+        LocalDate forecastDate;
+        int forecastDay;
+        for (Weather hourly : hourlyWeather) {
+            forecastDate = hourly.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            forecastDay = forecastDate.getDayOfMonth();
+            if (forecastDay == today) {
+                todayHourly.add(hourly);
+            }
+        }
+        return todayHourly;
     }
 
     public OWM getOwm() {

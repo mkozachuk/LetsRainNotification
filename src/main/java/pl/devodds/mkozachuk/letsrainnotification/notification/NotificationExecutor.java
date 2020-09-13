@@ -7,6 +7,7 @@ import pl.devodds.mkozachuk.letsrainnotification.controller.UserController;
 import pl.devodds.mkozachuk.letsrainnotification.controller.WeatherChecker;
 import pl.devodds.mkozachuk.letsrainnotification.messages.Messages;
 import pl.devodds.mkozachuk.letsrainnotification.model.User;
+import pl.devodds.mkozachuk.letsrainnotification.service.EmailServiceImpl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -25,13 +26,15 @@ public class NotificationExecutor {
     private TelegramBot bot;
     private Messages messages;
     private UserController userController;
+    private EmailServiceImpl emailService;
 
-    public NotificationExecutor(UserController userController, PlaceController placeController, WeatherChecker weatherChecker, TelegramBot bot, Messages messages) {
+    public NotificationExecutor(UserController userController, PlaceController placeController, WeatherChecker weatherChecker, TelegramBot bot, Messages messages, EmailServiceImpl emailService) {
         this.userController = userController;
         this.placeController = placeController;
         this.weatherChecker = weatherChecker;
         this.bot = bot;
         this.messages = messages;
+        this.emailService = emailService;
     }
 
     private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
@@ -51,7 +54,7 @@ public class NotificationExecutor {
 
             Duration duration = Duration.between(now, nextRun);
             long initialDelay = duration.getSeconds();
-            scheduler.scheduleAtFixedRate(new NotificationTask(placeController, weatherChecker, user, bot, messages),
+            scheduler.scheduleAtFixedRate(new NotificationTask(placeController, weatherChecker, user, bot, messages, emailService),
                     initialDelay,
                     TimeUnit.DAYS.toSeconds(1),
                     TimeUnit.SECONDS);

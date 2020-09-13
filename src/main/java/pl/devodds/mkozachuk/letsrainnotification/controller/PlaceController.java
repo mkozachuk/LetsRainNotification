@@ -37,4 +37,8 @@ public class PlaceController {
         return newPlace;
     }
 
+    public void deletePlace(Place place){
+        placeRepository.delete(place);
+    }
+
 }
