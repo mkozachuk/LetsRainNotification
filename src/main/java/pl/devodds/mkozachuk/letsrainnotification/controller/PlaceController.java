@@ -9,6 +9,7 @@ import pl.devodds.mkozachuk.letsrainnotification.repository.PlaceRepository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class PlaceController {
@@ -24,6 +25,10 @@ public class PlaceController {
 
     public List<Place> findAllPlacesByUser(User user){
         return placeRepository.findAllByUser(user);
+    }
+
+    public Optional<Place> findById(Long id){
+        return placeRepository.findById(id);
     }
 
     public Place placeCreator(OWM owm, User user, double lat, double lon) throws APIException {

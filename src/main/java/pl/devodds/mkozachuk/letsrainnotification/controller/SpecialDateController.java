@@ -1,5 +1,6 @@
 package pl.devodds.mkozachuk.letsrainnotification.controller;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import pl.devodds.mkozachuk.letsrainnotification.model.SpecialDate;
 import pl.devodds.mkozachuk.letsrainnotification.model.User;
